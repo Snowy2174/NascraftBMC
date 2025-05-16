@@ -37,7 +37,7 @@ public class CategoryEditor {
         identifier = category.getIdentifier();
 
         displayName = category.getDisplayName();
-        material = category.getMaterial();
+        material = Material.valueOf(category.getMaterial());
 
         this.player = player;
 
@@ -158,7 +158,7 @@ public class CategoryEditor {
         Category newCategory = new Category(identifier);
 
         newCategory.setDisplayName(displayName);
-        newCategory.setDisplayMaterial(material);
+        newCategory.setDisplayMaterial(String.valueOf(material));
         newCategory.setItems(previousCategory.getItems());
 
         categories.set(categories.indexOf(previousCategory), newCategory);

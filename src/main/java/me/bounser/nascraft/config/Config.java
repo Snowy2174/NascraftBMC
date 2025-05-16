@@ -20,6 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import plugin.customcooking.CustomCooking;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -35,6 +36,7 @@ public class Config {
     private FileConfiguration investments;
     private static Config instance;
     private Nascraft main;
+    private CustomCooking customCooking;
 
     public static Config getInstance() {
         return instance == null ? instance = new Config() : instance;
@@ -44,6 +46,7 @@ public class Config {
         main = Nascraft.getInstance();
         main.saveDefaultConfig();
         this.config = Nascraft.getInstance().getConfig();
+        this.customCooking = CustomCooking.getInstance();
 
         items = setupFile("items.yml");
         categories = setupFile("categories.yml");
@@ -647,15 +650,7 @@ public class Config {
 
         if (itemStack == null)
             try {
-                // Try to get the item from ItemsAdder
-                CustomStack customStack = CustomStack.getInstance(identifier);
-                if (customStack != null) {
-                    itemStack = customStack.getItemStack();
-                } else if (Material.getMaterial(identifier.replaceAll("\\d", "").toUpperCase()) != null) {
-                    // Fallback to default Material
-                    itemStack = new ItemStack(Material.getMaterial(identifier.replaceAll("\\d", "").toUpperCase()));
-                }
-
+                itemStack = plugin.customcooking.utility.InventoryUtil.buildItemAPI(identifier);
             } catch (IllegalArgumentException e) {
                 Nascraft.getInstance().getLogger().severe("Couldn't load item with identifier: " + identifier);
                 Nascraft.getInstance().getLogger().severe("Reason: Material " + identifier.replaceAll("\\d", "").toUpperCase() + " is not valid!");
@@ -709,7 +704,7 @@ public class Config {
         if (!items.contains("items." + identifier + ".alias")) {
             String alias = (Character.toUpperCase(identifier.charAt(0)) + identifier.substring(1)).replace("_", " ").replace("t1", "").replace("t2", "").replace("perfect", "");
             if (identifier.contains("perfect")) {
-                alias = "Perfect" + alias;
+                alias = "Perfect " + alias;
             }
             return alias;
         } else {
@@ -837,11 +832,11 @@ public class Config {
         return inventorygui.getInt("main-menu.alerts.slot");
     }
 
-    public Material getAlertsMaterial(boolean linked) {
+    public String getAlertsMaterial(boolean linked) {
 
         String path = "main-menu.alerts." + (linked ? "linked" : "not-linked") + ".material";
 
-        return Material.getMaterial(inventorygui.getString(path).toUpperCase());
+        return inventorygui.getString(path).toUpperCase();
     }
 
     public boolean getLimitOrdersMenuEnabled() {
@@ -852,8 +847,8 @@ public class Config {
         return inventorygui.getInt("main-menu.limit-orders.slot");
     }
 
-    public Material getLimitOrdersMaterial() {
-        return Material.getMaterial(inventorygui.getString("main-menu.limit-orders.material").toUpperCase());
+    public String getLimitOrdersMaterial() {
+        return inventorygui.getString("main-menu.limit-orders.material").toUpperCase();
     }
 
     public boolean getInformationMenuEnabled() {
@@ -864,8 +859,8 @@ public class Config {
         return inventorygui.getInt("main-menu.information.slot");
     }
 
-    public Material getInformationMaterial() {
-        return Material.getMaterial(inventorygui.getString("main-menu.information.material").toUpperCase());
+    public String getInformationMaterial() {
+        return inventorygui.getString("main-menu.information.material").toUpperCase();
     }
 
     public boolean getPortfolioMarketMenuEnabled() {
@@ -876,10 +871,10 @@ public class Config {
         return inventorygui.getInt("main-menu.portfolio.slot");
     }
 
-    public Material getPortfolioMaterial(boolean linked) {
+    public String getPortfolioMaterial(boolean linked) {
         if (linked)
-            return Material.getMaterial(inventorygui.getString("main-menu.portfolio.linked.material").toUpperCase());
-        return Material.getMaterial(inventorygui.getString("main-menu.portfolio.not-linked.material").toUpperCase());
+            return inventorygui.getString("main-menu.portfolio.linked.material").toUpperCase();
+        return inventorygui.getString("main-menu.portfolio.not-linked.material").toUpperCase();
     }
 
     public boolean getTrendsEnabled() {
@@ -890,8 +885,8 @@ public class Config {
         return inventorygui.getInt("main-menu.trends.slot");
     }
 
-    public Material getTrendsMaterial() {
-        return Material.getMaterial(inventorygui.getString("main-menu.trends.material").toUpperCase());
+    public String getTrendsMaterial() {
+        return (inventorygui.getString("main-menu.trends.material").toUpperCase());
     }
 
     public HashMap<Material, List<Integer>> getMainMenuFillers() {
@@ -974,8 +969,8 @@ public class Config {
         return inventorygui.getInt("buy-sell.alerts.slot");
     }
 
-    public Material getAlertsBuySellMaterial() {
-        return Material.getMaterial(inventorygui.getString("buy-sell.alerts.material").toUpperCase());
+    public String getAlertsBuySellMaterial() {
+        return inventorygui.getString("buy-sell.alerts.material").toUpperCase();
     }
 
     public boolean getLimitOrdersBuySellEnabled() {
@@ -986,8 +981,8 @@ public class Config {
         return inventorygui.getInt("buy-sell.limit-orders.slot");
     }
 
-    public Material getLimitOrdersBuySellMaterial() {
-        return Material.getMaterial(inventorygui.getString("buy-sell.limit-orders.material").toUpperCase());
+    public String getLimitOrdersBuySellMaterial() {
+        return inventorygui.getString("buy-sell.limit-orders.material").toUpperCase();
     }
 
     public boolean getInfoBuySellEnabled() {
@@ -998,8 +993,8 @@ public class Config {
         return inventorygui.getInt("buy-sell.info.slot");
     }
 
-    public Material getInfoBuySellMaterial() {
-        return Material.getMaterial(inventorygui.getString("buy-sell.info.material").toUpperCase());
+    public String getInfoBuySellMaterial() {
+        return inventorygui.getString("buy-sell.info.material").toUpperCase();
     }
 
     public boolean getBuySellBackEnabled() {
@@ -1010,8 +1005,8 @@ public class Config {
         return inventorygui.getInt("buy-sell.back-button.slot");
     }
 
-    public Material getBuySellBackMaterial() {
-        return Material.getMaterial(inventorygui.getString("buy-sell.back-button.material").toUpperCase());
+    public String getBuySellBackMaterial() {
+        return inventorygui.getString("buy-sell.back-button.material").toUpperCase();
     }
 
     public List<Integer> getBuySellFillersSlots() {
@@ -1024,8 +1019,8 @@ public class Config {
 
     //
 
-    public Material getBuySellBuyMaterial() {
-        return Material.getMaterial(inventorygui.getString("buy-sell.buy-buttons.material").toUpperCase());
+    public String getBuySellBuyMaterial() {
+        return inventorygui.getString("buy-sell.buy-buttons.material").toUpperCase();
     }
 
     public HashMap<Integer, Integer> getBuySellBuySlots() {
@@ -1043,8 +1038,8 @@ public class Config {
     //
 
 
-    public Material getBuySellSellMaterial() {
-        return Material.getMaterial(inventorygui.getString("buy-sell.sell-buttons.material").toUpperCase());
+    public String getBuySellSellMaterial() {
+        return inventorygui.getString("buy-sell.sell-buttons.material").toUpperCase();
     }
 
     public HashMap<Integer, Integer> getBuySellSellSlots() {
@@ -1071,12 +1066,12 @@ public class Config {
         return inventorygui.getInt("alerts.back-button.slot");
     }
 
-    public Material getAlertsMenuBackMaterial() {
-        return Material.getMaterial(inventorygui.getString("alerts.back-button.material").toUpperCase());
+    public String getAlertsMenuBackMaterial() {
+        return inventorygui.getString("alerts.back-button.material").toUpperCase();
     }
 
-    public Material getAlertsMenuFillersMaterial() {
-        return Material.getMaterial(inventorygui.getString("alerts.fillers.material").toUpperCase());
+    public String getAlertsMenuFillersMaterial() {
+        return inventorygui.getString("alerts.fillers.material").toUpperCase();
     }
 
     public List<Integer> getAlertsMenuFillersSlots() {
@@ -1127,8 +1122,8 @@ public class Config {
         return inventorygui.getInt("set-limit-orders.back-button.slot");
     }
 
-    public Material getSetLimitOrderMenuBackMaterial() {
-        return Material.getMaterial(inventorygui.getString("set-limit-orders.back-button.material").toUpperCase());
+    public String getSetLimitOrderMenuBackMaterial() {
+        return inventorygui.getString("set-limit-orders.back-button.material").toUpperCase();
     }
 
     public int getSetLimitOrderMenuItemSlot() {
@@ -1139,40 +1134,40 @@ public class Config {
         return inventorygui.getInt("set-limit-orders.time.slot");
     }
 
-    public Material getSetLimitOrderMenuTimeMaterial() {
-        return Material.getMaterial(inventorygui.getString("set-limit-orders.time.material").toUpperCase());
+    public String getSetLimitOrderMenuTimeMaterial() {
+        return inventorygui.getString("set-limit-orders.time.material").toUpperCase();
     }
 
     public int getSetLimitOrderMenuPriceSlot() {
         return inventorygui.getInt("set-limit-orders.price.slot");
     }
 
-    public Material getSetLimitOrderMenuPriceMaterial() {
-        return Material.getMaterial(inventorygui.getString("set-limit-orders.price.material").toUpperCase());
+    public String getSetLimitOrderMenuPriceMaterial() {
+        return inventorygui.getString("set-limit-orders.price.material").toUpperCase();
     }
 
     public int getSetLimitOrderMenuQuantitySlot() {
         return inventorygui.getInt("set-limit-orders.quantity.slot");
     }
 
-    public Material getSetLimitOrderMenuQuantityMaterial() {
-        return Material.getMaterial(inventorygui.getString("set-limit-orders.quantity.material").toUpperCase());
+    public String getSetLimitOrderMenuQuantityMaterial() {
+        return inventorygui.getString("set-limit-orders.quantity.material").toUpperCase();
     }
 
     public int getSetLimitOrderMenuConfirmSellSlot() {
         return inventorygui.getInt("set-limit-orders.confirm-sell.slot");
     }
 
-    public Material getSetLimitOrderMenuConfirmSellMaterial() {
-        return Material.getMaterial(inventorygui.getString("set-limit-orders.confirm-sell.material").toUpperCase());
+    public String getSetLimitOrderMenuConfirmSellMaterial() {
+        return inventorygui.getString("set-limit-orders.confirm-sell.material").toUpperCase();
     }
 
     public int getSetLimitOrderMenuConfirmBuySlot() {
         return inventorygui.getInt("set-limit-orders.confirm-buy.slot");
     }
 
-    public Material getSetLimitOrderMenuConfirmBuyMaterial() {
-        return Material.getMaterial(inventorygui.getString("set-limit-orders.confirm-buy.material").toUpperCase());
+    public String getSetLimitOrderMenuConfirmBuyMaterial() {
+        return inventorygui.getString("set-limit-orders.confirm-buy.material").toUpperCase();
     }
 
     public Material getSetLimitOrdersMenuFillersMaterial() {
@@ -1239,8 +1234,8 @@ public class Config {
         return inventorygui.getInt("portfolio.debt.exp.slot");
     }
 
-    public Material getDebtExpMaterial() {
-        return Material.getMaterial(inventorygui.getString("portfolio.debt.exp.material").toUpperCase());
+    public String getDebtExpMaterial() {
+        return inventorygui.getString("portfolio.debt.exp.material").toUpperCase();
     }
 
     public boolean getDebtInfoEnabled() {
@@ -1251,8 +1246,8 @@ public class Config {
         return inventorygui.getInt("portfolio.debt.info.slot");
     }
 
-    public Material getDebtInfoMaterial() {
-        return Material.getMaterial(inventorygui.getString("portfolio.debt.info.material").toUpperCase());
+    public String getDebtInfoMaterial() {
+        return inventorygui.getString("portfolio.debt.info.material").toUpperCase();
     }
 
     public boolean getDebtRepayAllEnabled() {
@@ -1263,8 +1258,8 @@ public class Config {
         return inventorygui.getInt("portfolio.debt.repay-all.slot");
     }
 
-    public Material getDebtRepayAllMaterial() {
-        return Material.getMaterial(inventorygui.getString("portfolio.debt.repay-all.material").toUpperCase());
+    public String getDebtRepayAllMaterial() {
+        return inventorygui.getString("portfolio.debt.repay-all.material").toUpperCase();
     }
 
     public boolean getDebtRepayEnabled() {
@@ -1275,8 +1270,8 @@ public class Config {
         return inventorygui.getInt("portfolio.debt.repay-custom.slot");
     }
 
-    public Material getDebtRepayMaterial() {
-        return Material.getMaterial(inventorygui.getString("portfolio.debt.repay-custom.material").toUpperCase());
+    public String getDebtRepayMaterial() {
+        return (inventorygui.getString("portfolio.debt.repay-custom.material").toUpperCase());
     }
 
     public boolean getDebtMaxLoanEnabled() {
@@ -1287,8 +1282,8 @@ public class Config {
         return inventorygui.getInt("portfolio.debt.get-max-loan.slot");
     }
 
-    public Material getDebtMaxLoanMaterial() {
-        return Material.getMaterial(inventorygui.getString("portfolio.debt.get-max-loan.material").toUpperCase());
+    public String getDebtMaxLoanMaterial() {
+        return inventorygui.getString("portfolio.debt.get-max-loan.material").toUpperCase();
     }
 
     public boolean getDebtCustomEnabled() {
@@ -1299,8 +1294,8 @@ public class Config {
         return inventorygui.getInt("portfolio.debt.custom-loan.slot");
     }
 
-    public Material getDebtCustomMaterial() {
-        return Material.getMaterial(inventorygui.getString("portfolio.debt.custom-loan.material").toUpperCase());
+    public String getDebtCustomMaterial() {
+        return inventorygui.getString("portfolio.debt.custom-loan.material").toUpperCase();
     }
 
     public List<Integer> getDebtFillersSlots() {

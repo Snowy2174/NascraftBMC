@@ -55,7 +55,7 @@ public class TopMenu implements MenuPage {
             gui.setItem(
                     config.getTopBackSlot(),
                     MarketMenuManager.getInstance().generateItemStack(
-                            config.getTopBackMaterial(),
+                            config.getTopBackMaterial().toString(),
                             BukkitComponentSerializer.legacy().serialize(backComponent)
                     ));
         }
@@ -68,7 +68,7 @@ public class TopMenu implements MenuPage {
             Component fillerComponent = MiniMessage.miniMessage().deserialize(Lang.get().message(Message.GUI_FILLERS_NAME));
 
             ItemStack filler = MarketMenuManager.getInstance().generateItemStack(
-                    material,
+                    material.toString(),
                     BukkitComponentSerializer.legacy().serialize(fillerComponent)
             );
 

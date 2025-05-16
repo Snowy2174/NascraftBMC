@@ -56,7 +56,7 @@ public class DebtMenu implements MenuPage {
             gui.setItem(
                     config.getDebtBackSlot(),
                     MarketMenuManager.getInstance().generateItemStack(
-                            config.getDebtBackMaterial(),
+                            config.getDebtBackMaterial().toString(),
                             BukkitComponentSerializer.legacy().serialize(backComponent)
                     ));
         }
@@ -66,7 +66,7 @@ public class DebtMenu implements MenuPage {
         Component fillerComponent = MiniMessage.miniMessage().deserialize(Lang.get().message(Message.GUI_FILLERS_NAME));
 
         ItemStack filler = MarketMenuManager.getInstance().generateItemStack(
-                config.getDebtFillersMaterial(),
+                config.getDebtFillersMaterial().toString(),
                 BukkitComponentSerializer.legacy().serialize(fillerComponent)
         );
 

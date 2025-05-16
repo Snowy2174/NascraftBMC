@@ -13,6 +13,7 @@ import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -124,7 +125,7 @@ public class AlertsMenu implements MenuPage {
             }
 
             ItemStack alert = MarketMenuManager.getInstance().generateItemStack(
-                    item.getItemStack().getType(),
+                    item.getItemStack().getType().toString(),
                     item.getFormattedName(),
                     itemLore
             );

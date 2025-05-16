@@ -63,8 +63,6 @@ public class Price {
     private float yearChange;
     private float allChange;
 
-    private boolean saleOnly;
-
     public Price(Item item, float initialValue, float elasticity, float support, float resistance, float noiseIntensity) {
 
         this.item = item;
@@ -91,7 +89,6 @@ public class Price {
         this.noiseIntensity = noiseIntensity * Config.getInstance().getNoiseMultiplier();
         this.elasticity = elasticity * Config.getInstance().getElasticityMultiplier();
 
-        saleOnly = Config.getInstance().saleOnly(item.getIdentifier());
         taxBuy = Config.getInstance().getTaxBuy(getItem().getIdentifier());
         taxSell = Config.getInstance().getTaxSell(getItem().getIdentifier());
 
@@ -205,8 +202,6 @@ public class Price {
     public double getUpperStockLimit() { return upperStockThreshold; }
 
     public double getLowerStockThreshold() { return lowerStockThreshold; }
-
-    public boolean isSaleOnly() { return saleOnly; }
 
     public boolean canStockChange(float change, boolean buy) {
 

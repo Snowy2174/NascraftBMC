@@ -248,7 +248,7 @@ public class BuySellMenu implements MenuPage{
         Component fillerComponent = MiniMessage.miniMessage().deserialize(Lang.get().message(Message.GUI_FILLERS_NAME));
 
         ItemStack filler = MarketMenuManager.getInstance().generateItemStack(
-                config.getBuySellFillersMaterial(),
+                config.getBuySellFillersMaterial().toString(),
                 BukkitComponentSerializer.legacy().serialize(fillerComponent)
         );
 
@@ -337,7 +337,7 @@ public class BuySellMenu implements MenuPage{
         gui.setItem(
                 config.getBuySellMenuItemSlot(),
                 MarketMenuManager.getInstance().generateItemStack(
-                        item.getItemStack().getType(),
+                        item.getIdentifier(),
                         item.getFormattedName(),
                         MarketMenuManager.getInstance().getLoreFromItem(item, Lang.get().message(Message.GUI_BUYSELL_ITEM_LORE))
                 )

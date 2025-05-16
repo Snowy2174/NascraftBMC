@@ -174,7 +174,7 @@ public class MarketEditor {
 
         for (Category category : categories) {
 
-            ItemStack categoryItemStack = new ItemStack(category.getMaterial());
+            ItemStack categoryItemStack = new ItemStack(Material.valueOf(category.getMaterial()));
 
             ItemMeta CategoryMeta = categoryItemStack.getItemMeta();
 

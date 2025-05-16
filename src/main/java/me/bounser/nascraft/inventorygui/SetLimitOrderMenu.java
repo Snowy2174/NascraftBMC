@@ -60,7 +60,7 @@ public class SetLimitOrderMenu implements MenuPage {
             gui.setItem(
                     config.getBuySellBackSlot(),
                     MarketMenuManager.getInstance().generateItemStack(
-                            config.getSetLimitOrderMenuBackMaterial(),
+                            config.getSetLimitOrderMenuBackMaterial().toString(),
                             BukkitComponentSerializer.legacy().serialize(backComponent)
                     ));
         }
@@ -70,7 +70,7 @@ public class SetLimitOrderMenu implements MenuPage {
         Component fillerComponent = MiniMessage.miniMessage().deserialize(Lang.get().message(Message.GUI_FILLERS_NAME));
 
         ItemStack filler = MarketMenuManager.getInstance().generateItemStack(
-                config.getSetLimitOrdersMenuFillersMaterial(),
+                config.getSetLimitOrdersMenuFillersMaterial().toString(),
                 BukkitComponentSerializer.legacy().serialize(fillerComponent)
         );
 

@@ -221,7 +221,7 @@ public class MainMenu implements MenuPage {
         for (Material material : fillers.keySet()) {
 
             ItemStack filler = MarketMenuManager.getInstance().generateItemStack(
-                    material,
+                    material.toString(),
                     BukkitComponentSerializer.legacy().serialize(fillerComponent)
             );
 

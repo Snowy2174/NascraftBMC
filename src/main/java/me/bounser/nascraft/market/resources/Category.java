@@ -25,7 +25,7 @@ public class Category {
 
     private String formattedDisplayName;
 
-    private Material material;
+    private String material;
 
     private List<Item> items = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class Category {
             formattedDisplayName = BukkitComponentSerializer.legacy().serialize(defaultMiniMessageName);
         }
 
-        this.material = Config.getInstance().getMaterialOfCategory(this);
+        this.material = String.valueOf(Config.getInstance().getMaterialOfCategory(this));
     }
 
     public void addItem(Item item) { items.add(item); }
@@ -57,7 +57,7 @@ public class Category {
 
     public void setDisplayName(String displayName) { this.displayName = displayName; }
 
-    public void setDisplayMaterial(Material material) { this.material = material; }
+    public void setDisplayMaterial(String material) { this.material = material; }
 
     //
 
@@ -71,7 +71,7 @@ public class Category {
 
     public String getFormattedDisplayName() { return formattedDisplayName; }
 
-    public Material getMaterial() { return material; }
+    public String getMaterial() { return material; }
 
     public List<Item> getItems() { return items; }
 

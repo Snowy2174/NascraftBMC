@@ -123,7 +123,7 @@ public class Item {
 
         taggedAlias = alias.replace("_", " ").replace("t1", "").replace("t2", "").replace("perfect", "");
         if (alias.contains("perfect")) {
-            taggedAlias = "Perfect" + taggedAlias;
+            taggedAlias = "Perfect " + taggedAlias;
         }
 
         Component miniMessageAlias = MiniMessage.miniMessage().deserialize(alias);
