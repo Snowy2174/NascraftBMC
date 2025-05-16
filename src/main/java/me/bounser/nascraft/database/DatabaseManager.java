@@ -38,11 +38,11 @@ public class DatabaseManager {
                 break;
 
             case REDIS:
-                database = new Redis(
-                        Config.getInstance().getHost(),
-                        Config.getInstance().getPort(),
-                        Config.getInstance().getPassword()
-                ); break;
+         //       database = new Redis(
+          //              Config.getInstance().getHost(),
+           //             Config.getInstance().getPort(),
+            //            Config.getInstance().getPassword()
+             //   ); break;
         }
 
         database.connect();

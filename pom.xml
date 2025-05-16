@@ -128,6 +128,10 @@
             <url>https://repo.codemc.io/repository/maven-public/</url>
             <layout>default</layout>
         </repository>
+        <repository>
+            <id>matteodev</id>
+            <url>https://maven.devs.beer/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -233,6 +237,12 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>1.8.22</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LoneDev6</groupId>
+            <artifactId>api-itemsadder</artifactId>
+            <version>3.5.0c-r5</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -110,11 +110,6 @@ public class Wand {
             itemMeta.getPersistentDataContainer().set(keyMaxProfit, PersistentDataType.FLOAT, maxProfit);
         }
 
-        if (glim) {
-            itemMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-
         wand.setItemMeta(itemMeta);
 
         return wand;

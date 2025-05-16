@@ -15,7 +15,7 @@ public class TransactionCompletedEvent extends Event {
     private double price;
     private Action action;
 
-    public TransactionCompletedEvent(Player player, Item item, float amount, Action action, double price) {
+    public TransactionCompletedEvent(Player player, Item item, float amount, Action action, float price) {
         this.player = player;
         this.item = item;
         this.amount = amount;
@@ -44,6 +44,6 @@ public class TransactionCompletedEvent extends Event {
         return action;
     }
 
-    public double getPrice() { return price; }
+    public float getPrice() { return (float) price; }
 
 }

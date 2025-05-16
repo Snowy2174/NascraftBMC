@@ -1,6 +1,7 @@
 package me.bounser.nascraft.config;
 
 import de.tr7zw.changeme.nbtapi.NBT;
+import dev.lone.itemsadder.api.CustomStack;
 import me.bounser.nascraft.Nascraft;
 import me.bounser.nascraft.database.DatabaseManager;
 import me.bounser.nascraft.database.DatabaseType;
@@ -646,7 +647,15 @@ public class Config {
 
         if (itemStack == null)
             try {
-                itemStack = new ItemStack(Material.getMaterial(identifier.replaceAll("\\d", "").toUpperCase()));
+                // Try to get the item from ItemsAdder
+                CustomStack customStack = CustomStack.getInstance(identifier);
+                if (customStack != null) {
+                    itemStack = customStack.getItemStack();
+                } else if (Material.getMaterial(identifier.replaceAll("\\d", "").toUpperCase()) != null) {
+                    // Fallback to default Material
+                    itemStack = new ItemStack(Material.getMaterial(identifier.replaceAll("\\d", "").toUpperCase()));
+                }
+
             } catch (IllegalArgumentException e) {
                 Nascraft.getInstance().getLogger().severe("Couldn't load item with identifier: " + identifier);
                 Nascraft.getInstance().getLogger().severe("Reason: Material " + identifier.replaceAll("\\d", "").toUpperCase() + " is not valid!");
@@ -670,15 +679,24 @@ public class Config {
         if (items.contains("items." + identifier + ".childs." + childIdentifier + "item-stack"))
             itemStack = items.getSerializable("items." + identifier + ".childs." + childIdentifier + "item-stack", ItemStack.class);
 
-        if (itemStack == null)
+        if (itemStack == null) {
             try {
-                itemStack = new ItemStack(Material.getMaterial(childIdentifier.replaceAll("\\d", "").toUpperCase()));
+                // Try to get the item from ItemsAdder
+                CustomStack customStack = CustomStack.getInstance(identifier.replaceAll("\\d", "").toUpperCase());
+                System.out.println(identifier);
+                if (customStack != null) {
+                    itemStack = customStack.getItemStack();
+                } else {
+                    // Fallback to default Material
+                    itemStack = new ItemStack(Material.getMaterial(identifier.replaceAll("\\d", "").toUpperCase()));
+                }
             } catch (IllegalArgumentException e) {
                 Nascraft.getInstance().getLogger().severe("Couldn't load item with identifier: " + identifier);
                 Nascraft.getInstance().getLogger().severe("Reason: Material " + identifier.replaceAll("\\d", "").toUpperCase() + " is not valid!");
                 Nascraft.getInstance().getLogger().severe("Does the item exist in the version of your server?");
                 Nascraft.getInstance().getPluginLoader().disablePlugin(Nascraft.getInstance());
             }
+        }
 
         return itemStack;
     }
@@ -689,7 +707,11 @@ public class Config {
 
     public String getAlias(String identifier) {
         if (!items.contains("items." + identifier + ".alias")) {
-            return (Character.toUpperCase(identifier.charAt(0)) + identifier.substring(1)).replace("_", " ");
+            String alias = (Character.toUpperCase(identifier.charAt(0)) + identifier.substring(1)).replace("_", " ").replace("t1", "").replace("t2", "").replace("perfect", "");
+            if (identifier.contains("perfect")) {
+                alias = "Perfect" + alias;
+            }
+            return alias;
         } else {
             return items.getString("items." + identifier + ".alias");
         }
@@ -756,6 +778,13 @@ public class Config {
             return (float) config.getDouble("price-options.elasticity-multiplier");
         }
         return 1;
+    }
+
+    public boolean saleOnly(String identifier) {
+        if (items.contains("items." + identifier + ".sale-only")) {
+            return items.getBoolean("items." + identifier + ".sale-only");
+        }
+        return false;
     }
 
     // Categories:
@@ -870,10 +899,12 @@ public class Config {
         HashMap<Material, List<Integer>> fills = new HashMap<>();
 
         for (String section : inventorygui.getConfigurationSection("main-menu.fillers.").getKeys(false)) {
-
-            Material material = Material.valueOf(section.toUpperCase());
-
-            fills.put(material, inventorygui.getIntegerList("main-menu.fillers." + section));
+            try {
+                Material material = Material.valueOf(section.toUpperCase());
+                fills.put(material, inventorygui.getIntegerList("main-menu.fillers." + section));
+            } catch (IllegalArgumentException e) {
+                Nascraft.getInstance().getLogger().warning("Invalid material in main-menu.fillers: " + section);
+            }
         }
 
         return fills;

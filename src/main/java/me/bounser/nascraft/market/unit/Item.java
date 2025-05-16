@@ -121,7 +121,10 @@ public class Item {
 
     public void setupAlias(String alias) {
 
-        taggedAlias = alias;
+        taggedAlias = alias.replace("_", " ").replace("t1", "").replace("t2", "").replace("perfect", "");
+        if (alias.contains("perfect")) {
+            taggedAlias = "Perfect" + taggedAlias;
+        }
 
         Component miniMessageAlias = MiniMessage.miniMessage().deserialize(alias);
 
@@ -230,7 +233,7 @@ public class Item {
 
         MarketManager.getInstance().addOperation();
 
-        TransactionCompletedEvent transactionEvent = new TransactionCompletedEvent(player, this, amount, Action.BUY, worth);
+        TransactionCompletedEvent transactionEvent = new TransactionCompletedEvent(player, this, (float) amount, Action.BUY, (float) worth);
         Bukkit.getPluginManager().callEvent(transactionEvent);
 
         return worth;
@@ -308,7 +311,7 @@ public class Item {
             DiscordLog.getInstance().sendTradeLog(trade);
         MarketManager.getInstance().addOperation();
 
-        TransactionCompletedEvent transactionEvent = new TransactionCompletedEvent(player, this, amount, Action.SELL, worth);
+        TransactionCompletedEvent transactionEvent = new TransactionCompletedEvent(player, this, (float) amount, Action.SELL, (float) worth);
         Bukkit.getPluginManager().callEvent(transactionEvent);
 
         return worth;
