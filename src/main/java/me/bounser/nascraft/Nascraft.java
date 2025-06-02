@@ -146,7 +146,12 @@ public final class Nascraft extends JavaPlugin {
 
         createImagesFolder();
 
-        MarketManager.getInstance();
+        getServer().getPluginManager().registerEvents(new ItemsAdderReloadListener(), this);
+
+        if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
+            getLogger().info("Itemsadder detected!");
+            MarketManager.getInstance();
+        }
 
         if (config.isCommandEnabled("nascraft")) {
             new NascraftCommand();
@@ -176,8 +181,6 @@ public final class Nascraft extends JavaPlugin {
             new PortfolioCommand();
             Bukkit.getPluginManager().registerEvents(new PortfolioInventory(), this);
         }
-
-        getServer().getPluginManager().registerEvents(new ItemsAdderReloadListener(), this);
 
         ItemChartReduced.load();
 
