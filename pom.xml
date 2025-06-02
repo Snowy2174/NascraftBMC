@@ -6,7 +6,7 @@
 
     <groupId>me.bounser</groupId>
     <artifactId>Nascraft</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <packaging>jar</packaging>
 
     <name>Nascraft</name>
@@ -249,6 +249,11 @@
             <artifactId>CustomCooking</artifactId>
             <version>1.1.8</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
 </project>

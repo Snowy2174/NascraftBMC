@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.UUID;
+
 public class MoneyManager {
 
     private static MoneyManager instance;
