@@ -10,6 +10,7 @@ import me.bounser.nascraft.commands.admin.marketeditor.edit.category.CategoryEdi
 import me.bounser.nascraft.commands.admin.marketeditor.overview.MarketEditorInvListener;
 import me.bounser.nascraft.commands.alert.AlertsCommand;
 import me.bounser.nascraft.commands.alert.SetAlertCommand;
+import me.bounser.nascraft.commands.credentials.WebCommand;
 import me.bounser.nascraft.commands.discord.DiscordCommand;
 import me.bounser.nascraft.commands.portfolio.PortfolioCommand;
 import me.bounser.nascraft.config.ItemsAdderReloadListener;
@@ -145,7 +146,12 @@ public final class Nascraft extends JavaPlugin {
 
         createImagesFolder();
 
-        MarketManager.getInstance();
+        getServer().getPluginManager().registerEvents(new ItemsAdderReloadListener(), this);
+
+        if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
+            getLogger().info("Itemsadder detected!");
+            MarketManager.getInstance();
+        }
 
         if (config.isCommandEnabled("nascraft")) {
             new NascraftCommand();
@@ -176,11 +182,13 @@ public final class Nascraft extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PortfolioInventory(), this);
         }
 
-        getServer().getPluginManager().registerEvents(new ItemsAdderReloadListener(), this);
-
         ItemChartReduced.load();
 
         if (config.getWebEnabled()) {
+
+            if (config.isCommandEnabled("web")) {
+                new WebCommand();
+            }
 
             extractDefaultWebFiles();
             extractImage("images/logo.png");
