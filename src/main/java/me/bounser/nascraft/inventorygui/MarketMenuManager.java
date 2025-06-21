@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import plugin.customcooking.CustomCooking;
+import plugin.borealcore.utility.InventoryUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class MarketMenuManager {
 
     public ItemStack generateItemStack(String material, String name, List<String> lore) {
 
-        ItemStack itemStack = plugin.customcooking.utility.InventoryUtil.buildItemAPI(material);
+        ItemStack itemStack = InventoryUtil.buildItemAPI(material);
 
         ItemMeta meta = itemStack.getItemMeta();
 
@@ -64,7 +64,7 @@ public class MarketMenuManager {
 
     public ItemStack generateItemStack(String material, String name) {
 
-        ItemStack itemStack = plugin.customcooking.utility.InventoryUtil.buildItemAPI(material);
+        ItemStack itemStack = InventoryUtil.buildItemAPI(material);
 
         ItemMeta meta = itemStack.getItemMeta();
 

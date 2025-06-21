@@ -20,7 +20,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
-import plugin.customcooking.CustomCooking;
+import plugin.borealcore.BorealCore;
+import plugin.borealcore.utility.InventoryUtil;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -36,7 +37,7 @@ public class Config {
     private FileConfiguration investments;
     private static Config instance;
     private Nascraft main;
-    private CustomCooking customCooking;
+    private BorealCore borealCore;
 
     public static Config getInstance() {
         return instance == null ? instance = new Config() : instance;
@@ -46,7 +47,7 @@ public class Config {
         main = Nascraft.getInstance();
         main.saveDefaultConfig();
         this.config = Nascraft.getInstance().getConfig();
-        this.customCooking = CustomCooking.getInstance();
+        this.borealCore = BorealCore.getInstance();
 
         items = setupFile("items.yml");
         categories = setupFile("categories.yml");
@@ -650,7 +651,7 @@ public class Config {
 
         if (itemStack == null)
             try {
-                itemStack = plugin.customcooking.utility.InventoryUtil.buildItemAPI(identifier);
+                itemStack = InventoryUtil.buildItemAPI(identifier);
             } catch (IllegalArgumentException e) {
                 Nascraft.getInstance().getLogger().severe("Couldn't load item with identifier: " + identifier);
                 Nascraft.getInstance().getLogger().severe("Reason: Material " + identifier.replaceAll("\\d", "").toUpperCase() + " is not valid!");
